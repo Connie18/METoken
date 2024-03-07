@@ -1,8 +1,6 @@
 require("dotenv").config();
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-const infuraProjectId = process.env.INFURA_PROJECT_ID;
-
 module.exports = {
   networks: {
     dev: {
@@ -22,7 +20,7 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           process.env["SEPOLIA_PRIVATE_KEY"],
-          `https://sepolia.infura.io/v3/${infuraProjectId}`
+          `https://eth-sepolia.g.alchemy.com/v2/${process.env["ALCHEMY_API_KEY"]}`
         ),
       network_id: 11155111,
       gas: 5500000,
