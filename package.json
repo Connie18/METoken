@@ -1,19 +1,17 @@
 {
   "name": "metoken",
   "version": "1.0.0",
-  "description": "",
-  "main": "truffle.js",
+  "description": "A sample Truffle project using Sepolia testnet",
+  "main": "truffle-config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "zeppelin-solidity": "^1.6.0"
-  },
   "devDependencies": {
-    "dotenv": "^5.0.0",
-    "ethereumjs-wallet": "^0.6.0",
-    "truffle-wallet-provider": "0.0.5"
+    "@truffle/hdwallet-provider": "^2.0.0",
+    "dotenv": "^16.0.0",
+    "@openzeppelin/contracts": "^4.0.0",
+    "truffle": "^5.4.0"
   }
 }

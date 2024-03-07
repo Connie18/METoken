@@ -1,30 +1,7 @@
-// Install dependencies:
-// npm init
-// npm install --save-dev dotenv truffle-wallet-provider ethereumjs-wallet
-
-// Create .env in project root, with keys:
-// ROPSTEN_PRIVATE_KEY="123abc"
-// MAINNET_PRIVATE_KEY="123abc"
-
 require("dotenv").config();
-const Web3 = require("web3");
-const web3 = new Web3();
-const WalletProvider = require("truffle-wallet-provider");
-const Wallet = require("ethereumjs-wallet");
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-var mainNetPrivateKey = new Buffer(process.env["MAINNET_PRIVATE_KEY"], "hex");
-var mainNetWallet = Wallet.fromPrivateKey(mainNetPrivateKey);
-var mainNetProvider = new WalletProvider(
-  mainNetWallet,
-  "https://mainnet.infura.io/"
-);
-
-var ropstenPrivateKey = new Buffer(process.env["ROPSTEN_PRIVATE_KEY"], "hex");
-var ropstenWallet = Wallet.fromPrivateKey(ropstenPrivateKey);
-var ropstenProvider = new WalletProvider(
-  ropstenWallet,
-  "https://ropsten.infura.io/"
-);
+const infuraProjectId = process.env.INFURA_PROJECT_ID;
 
 module.exports = {
   networks: {
@@ -34,32 +11,37 @@ module.exports = {
       host: "localhost",
       port: 8545,
     },
-    mainnet: {
-      // Provided by Infura, load keys in .env file
-      network_id: "1",
-      provider: mainNetProvider,
-      gas: 4600000,
-      gasPrice: web3.utils.toWei("20", "gwei"),
-    },
-    ropsten: {
-      // Provided by Infura, load keys in .env file
-      network_id: "3",
-      provider: ropstenProvider,
-      gas: 4600000,
-      gasPrice: web3.utils.toWei("20", "gwei"),
-    },
-    kovan: {
-      network_id: 42,
-      host: "localhost", // parity --chain=kovan
-      port: 8545,
-      gas: 5000000,
-    },
     ganache: {
       // Ganache local test RPC blockchain
-      network_id: "5777",
+      network_id: "*",
       host: "localhost",
       port: 7545,
       gas: 6721975,
+    },
+    sepolia: {
+      provider: () =>
+        new HDWalletProvider(
+          process.env["SEPOLIA_PRIVATE_KEY"],
+          `https://sepolia.infura.io/v3/${infuraProjectId}`
+        ),
+      network_id: 11155111,
+      gas: 5500000,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
+  },
+
+  // Configure your compilers
+  compilers: {
+    solc: {
+      version: "0.8.0",
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200,
+        },
+      },
     },
   },
 };
